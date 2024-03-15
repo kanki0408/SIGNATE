@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[83]:
+# In[490]:
 
 
 # Google Driveと接続を行います。これを行うことで、Driveにあるデータにアクセスできるようになります。
@@ -10,7 +10,7 @@ from google.colab import drive
 drive.mount('/content/drive')
 
 
-# In[84]:
+# In[491]:
 
 
 # 作業フォルダへの移動を行います。
@@ -19,7 +19,7 @@ import os
 os.chdir('/content/drive/MyDrive/コンペ/参加中コンペ') #ここを変更。
 
 
-# In[85]:
+# In[492]:
 
 
 import pandas as pd
@@ -29,13 +29,13 @@ sample = pd.read_csv('sample_submit.csv',index_col=0, header=None)
 train.head()
 
 
-# In[86]:
+# In[493]:
 
 
 test.head()
 
 
-# In[87]:
+# In[494]:
 
 
 import matplotlib.pyplot as plt
@@ -52,7 +52,85 @@ plt.grid(True)
 plt.show()
 
 
-# In[88]:
+# In[495]:
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+from sklearn.datasets import fetch_california_housing
+train.hist(bins=30,figsize=(12,12))
+plt.show()
+
+
+# In[496]:
+
+
+def diagnostic_plots(df,variable):
+  #図のサイズ
+  plt.figure(figsize=(15,6))
+
+  #作成された図をどの位置に表示するのかということを意味する。
+  #1行2列のグリッドにおいて、1行目の左側（つまり1番目の位置）にサブプロットを配置することを意味します。
+  plt.subplot(1,2,1)
+  df[variable].value_counts().sort_index().plot.bar()
+  plt.title(f"Hitogram of {variable}")
+
+  plt.subplot(1,2,2)
+  #variableというデータ実際の図と、正規分布の場合の図をプロットしている
+  stats.probplot(df[variable],dist="norm",plot=plt)
+  plt.title(f"Q-Q plot of {variable}")
+
+  plt.show
+
+
+# In[497]:
+
+
+diagnostic_plots(train,"Pregnancies")
+
+
+# In[498]:
+
+
+train.head()
+
+
+# In[499]:
+
+
+def diagnostic_plots(df,variable):
+  #図のサイズ
+  plt.figure(figsize=(15,6))
+
+  #作成された図をどの位置に表示するのかということを意味する。
+  #1行2列のグリッドにおいて、1行目の左側（つまり1番目の位置）にサブプロットを配置することを意味します。
+  plt.subplot(1,2,1)
+  df[variable].hist(bins=30)
+  plt.title(f"Hitogram of {variable}")
+
+  plt.subplot(1,2,2)
+  #variableというデータ実際の図と、正規分布の場合の図をプロットしている
+  stats.probplot(df[variable],dist="norm",plot=plt)
+  plt.title(f"Q-Q plot of {variable}")
+
+  plt.show
+
+
+# In[500]:
+
+
+diagnostic_plots(train,"SkinThickness")
+
+
+# In[501]:
+
+
+diagnostic_plots(train,"BloodPressure")
+
+
+# In[502]:
 
 
 plt.hist(train['Glucose'], color='skyblue', edgecolor='black')
@@ -68,7 +146,7 @@ plt.grid(True)
 plt.show()
 
 
-# In[89]:
+# In[503]:
 
 
 plt.hist(train['BloodPressure'], color='skyblue', edgecolor='black')
@@ -84,7 +162,7 @@ plt.grid(True)
 plt.show()
 
 
-# In[90]:
+# In[504]:
 
 
 plt.hist(train['SkinThickness'], color='skyblue', edgecolor='black')
@@ -100,7 +178,7 @@ plt.grid(True)
 plt.show()
 
 
-# In[91]:
+# In[505]:
 
 
 plt.hist(train['Insulin'], color='skyblue', edgecolor='black')
@@ -116,7 +194,7 @@ plt.grid(True)
 plt.show()
 
 
-# In[92]:
+# In[506]:
 
 
 plt.hist(train['BMI'], color='skyblue', edgecolor='black')
@@ -132,7 +210,7 @@ plt.grid(True)
 plt.show()
 
 
-# In[93]:
+# In[507]:
 
 
 plt.hist(train['Age'], color='skyblue', edgecolor='black')
@@ -148,7 +226,7 @@ plt.grid(True)
 plt.show()
 
 
-# In[94]:
+# In[508]:
 
 
 plt.hist(train['DiabetesPedigreeFunction'], color='skyblue', edgecolor='black')
@@ -164,19 +242,19 @@ plt.grid(True)
 plt.show()
 
 
-# In[95]:
+# In[509]:
 
 
 sample.head()
 
 
-# In[96]:
+# In[510]:
 
 
 train.describe()
 
 
-# In[97]:
+# In[511]:
 
 
 train_x=train.drop(["Outcome"],axis=1)
@@ -184,21 +262,27 @@ train_y=train["Outcome"]
 test_x = test.copy()
 
 
-# In[98]:
+# In[512]:
 
 
 #相関関係の確認
 train.corrwith(train["Outcome"])
 
 
-# In[99]:
+# In[513]:
 
 
 train_x = train_x.drop(["index"],axis=1)
 test_x = test_x.drop(["index"],axis=1)
 
 
-# In[100]:
+# In[514]:
+
+
+diagnostic_plots(train,"BloodPressure")
+
+
+# In[515]:
 
 
 from sklearn.preprocessing import StandardScaler
@@ -214,32 +298,25 @@ st_train_x=pd.DataFrame(st_train_x, columns=train_x.columns, index=train_x.index
 st_test_x=pd.DataFrame(st_test_x, columns=test_x.columns, index=test_x.index)
 
 
-# In[101]:
-
-
-log_train_x= np.log1p(train_x)
-log_test_x = np.log1p(test_x)
-
-
-# In[102]:
+# In[516]:
 
 
 train_x.head()
 
 
-# In[103]:
+# In[517]:
 
 
 st_train_x.head()
 
 
-# In[104]:
+# In[518]:
 
 
 st_test_x.head()
 
 
-# In[105]:
+# In[519]:
 
 
 from sklearn.model_selection import KFold
@@ -285,7 +362,91 @@ pred = model.predict(dtest)
 pred_label=np.where(pred>0.5,1,0)
 
 
-# In[106]:
+# In[520]:
+
+
+test_x2=test_x.copy()
+train_x2=train_x.copy()
+# 変換後のデータで各列を置換
+train_x2['SkinThickness'] = np.log1p(train_x2['SkinThickness'])
+train_x2['Insulin'] = np.log1p(train_x2['Insulin'])
+train_x2['Age'] = np.log1p(train_x2['Age'])
+train_x2['DiabetesPedigreeFunction'] = np.log1p(train_x2['DiabetesPedigreeFunction'])
+test_x2['SkinThickness'] = np.log1p(test_x2['SkinThickness'])
+test_x2['Insulin'] = np.log1p(test_x2['Insulin'])
+test_x2['Age'] = np.log1p(test_x2['Age'])
+test_x2['DiabetesPedigreeFunction'] = np.log1p(test_x2['DiabetesPedigreeFunction'])
+
+
+# In[521]:
+
+
+diagnostic_plots(train,"SkinThickness")
+
+
+# In[522]:
+
+
+from sklearn.preprocessing import FunctionTransformer
+transformer = FunctionTransformer(lambda x: np.power(x,0.3))
+train_x2["SkinThickness"] = transformer.transform(train_x["SkinThickness"])
+test_x2["SkinThickness"] = transformer.transform(test_x["SkinThickness"])
+
+
+# In[523]:
+
+
+diagnostic_plots(train_x2,"SkinThickness")
+
+
+# In[524]:
+
+
+diagnostic_plots(train,"Insulin")
+
+
+# In[525]:
+
+
+from sklearn.preprocessing import FunctionTransformer
+transformer = FunctionTransformer(lambda x: np.power(x,0.5))
+train_x2["Insulin"] = transformer.transform(train_x["Insulin"])
+test_x2["Insulin"] = transformer.transform(test_x["Insulin"])
+diagnostic_plots(train_x2,"Insulin")
+
+
+# In[526]:
+
+
+diagnostic_plots(train,"DiabetesPedigreeFunction")
+
+
+# In[526]:
+
+
+
+
+
+# In[527]:
+
+
+train_x2.hist(bins=30,figsize=(12,12))
+plt.show()
+
+
+# In[528]:
+
+
+diagnostic_plots(train_x,"SkinThickness")
+
+
+# In[529]:
+
+
+train_x.head()
+
+
+# In[530]:
 
 
 from keras.layers import Dense, Dropout
@@ -298,14 +459,14 @@ scores_logloss =[]
 #クロスバリデーションを行う
 #学習データを4分割し、うち1つをバリデーションデータとすることを、バリデーションデータを変えて繰り返す
 kf=KFold(n_splits=4 , shuffle=True , random_state = 71)
-for tr_idx,va_idx in kf.split(st_train_x):
+for tr_idx,va_idx in kf.split(train_x2):
   #学習データを学習データとバリデーションデータに分ける
-  tr_x,va_x=st_train_x.iloc[tr_idx],st_train_x.iloc[va_idx]
+  tr_x,va_x=train_x2.iloc[tr_idx],train_x2.iloc[va_idx]
   tr_y,va_y=train_y.iloc[tr_idx],train_y.iloc[va_idx]
 
   # ニューラルネットモデルの構築
   model = Sequential()
-  model.add(Dense(256, activation='relu', input_shape=(train_x.shape[1],)))
+  model.add(Dense(256, activation='relu', input_shape=(train_x2.shape[1],)))
   model.add(Dropout(0.2))
   model.add(Dense(256, activation='relu'))
   model.add(Dropout(0.2))
@@ -334,32 +495,40 @@ print(f"accuracy:{np.mean(scores_accuracy):.4f}")
 
 pred = model.predict(test_x)
 pred_label=np.where(pred>0.5,1,0)
+#logloss:0.4759
+#accuracy:0.7827
 
 
-# In[109]:
+# In[531]:
 
 
 test_x.head()
 
 
-# In[111]:
+# In[532]:
 
 
+diagnostic_plots(train,"Pregnancies")
+
+
+# In[532]:
+
+
+
+
+
+# In[533]:
+
+
+pip install feature-engine
+
+
+# In[534]:
+
+
+from sklearn.linear_model import LogisticRegression
 scores_accuracy = []
 scores_logloss =[]
-log_train_x= np.log1p(train_x)
-log_test_x = np.log1p(test_x)
-train_x2=train_x.copy()
-test_x2=test_x.copy()
-# 変換後のデータで各列を置換
-train_x2['SkinThickness'] = np.log1p(train_x2['SkinThickness'])
-train_x2['Insulin'] = np.log1p(train_x2['Insulin'])
-train_x2['Age'] = np.log1p(train_x2['Age'])
-train_x2['DiabetesPedigreeFunction'] = np.log1p(train_x2['DiabetesPedigreeFunction'])
-test_x2['SkinThickness'] = np.log1p(test_x2['SkinThickness'])
-test_x2['Insulin'] = np.log1p(test_x2['Insulin'])
-test_x2['Age'] = np.log1p(test_x2['Age'])
-test_x2['DiabetesPedigreeFunction'] = np.log1p(test_x2['DiabetesPedigreeFunction'])
 #クロスバリデーションを行う
 #学習データを4分割し、うち1つをバリデーションデータとすることを、バリデーションデータを変えて繰り返す
 kf=KFold(n_splits=4 , shuffle=True , random_state = 71)
@@ -391,12 +560,17 @@ print(f"accuracy:{np.mean(scores_accuracy):.4f}")
 #accuracy:0.7743
 #logloss:0.4805
 #accuracy:0.7743
+#logloss:0.4802
+#accuracy:0.7743
+#logloss:0.4805
+#accuracy:0.7747
+#logloss:0.4808
+#accuracy:0.7757
 
 
-# In[112]:
+# In[535]:
 
 
-from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
 
 model_xgb=XGBClassifier(n_estimators=20,random_state=71)
@@ -409,26 +583,26 @@ pred=pred_xgb*0.8+pred_lr*0.2
 pred_label=np.where(pred>0.5,1,0)
 
 
-# In[ ]:
+# In[536]:
 
 
 pred
 
 
-# In[ ]:
+# In[537]:
 
 
 pred_label
 
 
-# In[113]:
+# In[538]:
 
 
 sample[1] = pred_label
 sample.to_csv("submit.csv", header=None)
 
 
-# In[ ]:
+# In[538]:
 
 
 
