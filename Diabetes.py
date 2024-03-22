@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[256]:
 
 
 # Google Driveと接続を行います。これを行うことで、Driveにあるデータにアクセスできるようになります。
@@ -10,7 +10,7 @@ from google.colab import drive
 drive.mount('/content/drive')
 
 
-# In[3]:
+# In[257]:
 
 
 # 作業フォルダへの移動を行います。
@@ -19,19 +19,19 @@ import os
 os.chdir('/content/drive/MyDrive/コンペ/参加中コンペ') #ここを変更。
 
 
-# In[17]:
+# In[258]:
 
 
 pip install feature-engine
 
 
-# In[18]:
+# In[259]:
 
 
 pip install feature-engine
 
 
-# In[2313]:
+# In[260]:
 
 
 import pandas as pd
@@ -41,13 +41,7 @@ sample = pd.read_csv('sample_submit.csv',index_col=0, header=None)
 train.head()
 
 
-# In[2314]:
-
-
-test.head()
-
-
-# In[2315]:
+# In[261]:
 
 
 import matplotlib.pyplot as plt
@@ -64,13 +58,13 @@ plt.grid(True)
 plt.show()
 
 
-# In[2315]:
+# In[261]:
 
 
 
 
 
-# In[2316]:
+# In[262]:
 
 
 import numpy as np
@@ -82,7 +76,7 @@ train.hist(bins=30,figsize=(12,12))
 plt.show()
 
 
-# In[2383]:
+# In[263]:
 
 
 import seaborn as sns
@@ -97,7 +91,7 @@ plt.title("Boxplot")
 plt.show()
 
 
-# In[2384]:
+# In[264]:
 
 
 def plot_boxplot_and_hist(data,variable):
@@ -118,13 +112,7 @@ def plot_boxplot_and_hist(data,variable):
   plt.show()
 
 
-# In[2385]:
-
-
-plot_boxplot_and_hist(train,"Glucose")
-
-
-# In[2386]:
+# In[265]:
 
 
 def find_limits(df,variable,fold):
@@ -134,21 +122,21 @@ def find_limits(df,variable,fold):
   return lower_limit,upper_limit
 
 
-# In[2387]:
+# In[266]:
 
 
 lower_limit,upper_limit = find_limits(train , "Glucose",2)
 print(lower_limit,upper_limit)
 
 
-# In[2388]:
+# In[267]:
 
 
 outliers = np.where((train["Glucose"]>upper_limit) | (train["Glucose"]<lower_limit),True,False,)
 outliers.sum()
 
 
-# In[2389]:
+# In[268]:
 
 
 from feature_engine.outliers import Winsorizer
@@ -156,7 +144,7 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 
 
-# In[2390]:
+# In[269]:
 
 
 breast_cancer = load_breast_cancer()
@@ -164,25 +152,7 @@ X = pd.DataFrame(breast_cancer.data,columns=breast_cancer.feature_names)
 y = breast_cancer.target
 
 
-# In[2391]:
-
-
-X.head()
-
-
-# In[2392]:
-
-
-y
-
-
-# In[2392]:
-
-
-
-
-
-# In[2393]:
+# In[270]:
 
 
 def diagnostic_plots(df,variable):
@@ -203,19 +173,13 @@ def diagnostic_plots(df,variable):
   plt.show
 
 
-# In[2394]:
+# In[271]:
 
 
 diagnostic_plots(train,"Pregnancies")
 
 
-# In[2395]:
-
-
-train.head()
-
-
-# In[2396]:
+# In[272]:
 
 
 def diagnostic_plots(df,variable):
@@ -236,143 +200,7 @@ def diagnostic_plots(df,variable):
   plt.show
 
 
-# In[2397]:
-
-
-diagnostic_plots(train,"SkinThickness")
-
-
-# In[2398]:
-
-
-diagnostic_plots(train,"BloodPressure")
-
-
-# In[2399]:
-
-
-plt.hist(train['Glucose'], color='skyblue', edgecolor='black')
-# グラフのタイトルとラベルの設定
-plt.title('Histogram')
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-
-# グリッド線の表示
-plt.grid(True)
-
-# グラフの表示
-plt.show()
-
-
-# In[2400]:
-
-
-plt.hist(train['BloodPressure'], color='skyblue', edgecolor='black')
-# グラフのタイトルとラベルの設定
-plt.title('Histogram')
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-
-# グリッド線の表示
-plt.grid(True)
-
-# グラフの表示
-plt.show()
-
-
-# In[2401]:
-
-
-plt.hist(train['SkinThickness'], color='skyblue', edgecolor='black')
-# グラフのタイトルとラベルの設定
-plt.title('Histogram')
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-
-# グリッド線の表示
-plt.grid(True)
-
-# グラフの表示
-plt.show()
-
-
-# In[2402]:
-
-
-plt.hist(train['Insulin'], color='skyblue', edgecolor='black')
-# グラフのタイトルとラベルの設定
-plt.title('Histogram')
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-
-# グリッド線の表示
-plt.grid(True)
-
-# グラフの表示
-plt.show()
-
-
-# In[2403]:
-
-
-plt.hist(train['BMI'], color='skyblue', edgecolor='black')
-# グラフのタイトルとラベルの設定
-plt.title('Histogram')
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-
-# グリッド線の表示
-plt.grid(True)
-
-# グラフの表示
-plt.show()
-
-
-# In[2404]:
-
-
-plt.hist(train['Age'], color='skyblue', edgecolor='black')
-# グラフのタイトルとラベルの設定
-plt.title('Histogram')
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-
-# グリッド線の表示
-plt.grid(True)
-
-# グラフの表示
-plt.show()
-
-
-# In[2405]:
-
-
-plt.hist(train['DiabetesPedigreeFunction'], color='skyblue', edgecolor='black')
-# グラフのタイトルとラベルの設定
-plt.title('Histogram')
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-
-# グリッド線の表示
-plt.grid(True)
-
-# グラフの表示
-plt.show()
-
-
-# In[2406]:
-
-
-sample.head()
-
-
-# In[2407]:
-
-
-train.describe()
-
-
-# In[2408]:
+# In[273]:
 
 
 train_x=train.drop(["Outcome"],axis=1)
@@ -380,28 +208,28 @@ train_y=train["Outcome"]
 test_x = test.copy()
 
 
-# In[2409]:
+# In[274]:
 
 
 #相関関係の確認
 train.corrwith(train["Outcome"])
 
 
-# In[2410]:
+# In[275]:
 
 
 train_x = train_x.drop(["index"],axis=1)
 test_x = test_x.drop(["index"],axis=1)
 
 
-# In[2411]:
+# In[276]:
 
 
 lower_limit,upper_limit = find_limits(train_x,"Glucose",2)
 lower_limit,upper_limit
 
 
-# In[2412]:
+# In[277]:
 
 
 from sklearn.preprocessing import PolynomialFeatures
@@ -411,39 +239,39 @@ t_test_x = poly.fit_transform(test_x)
 t_train_x
 
 
-# In[2413]:
+# In[278]:
 
 
 poly.get_feature_names_out()
 
 
-# In[2414]:
+# In[279]:
 
 
 t_train_x = pd.DataFrame(t_train_x,columns=poly.get_feature_names_out())
 t_test_x = pd.DataFrame(t_test_x,columns=poly.get_feature_names_out())
 
 
-# In[2415]:
+# In[280]:
 
 
 check = t_train_x
 t_train_x["Outcome"] = train["Outcome"]
 
 
-# In[2416]:
+# In[281]:
 
 
 t_train_x.head()
 
 
-# In[2417]:
+# In[282]:
 
 
 t_train_x.corrwith(t_train_x["Outcome"])
 
 
-# In[2418]:
+# In[283]:
 
 
 high_correlation_columns = []
@@ -464,19 +292,13 @@ OK = [ 'Pregnancies Glucose',
 OK
 
 
-# In[2419]:
+# In[284]:
 
 
 t_train_x[OK].head()
 
 
-# In[2420]:
-
-
-ok_train_x.head()
-
-
-# In[2421]:
+# In[285]:
 
 
 o_train_x = train_x.copy()
@@ -485,7 +307,7 @@ o2_train_x = train_x.copy()
 o2_test_x = test_x.copy()
 
 
-# In[2422]:
+# In[286]:
 
 
 o_train_x["Glucose"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
@@ -493,49 +315,28 @@ o_test_x["Glucose"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
 o_train_x["Glucose"].min(),o_train_x["Glucose"].max()
 
 
-# In[2423]:
+# In[287]:
 
 
 lower_limit,upper_limit = find_limits(train_x,"BloodPressure",2)
 lower_limit,upper_limit
 
 
-# In[2424]:
+# In[288]:
 
 
-o_train_x["BloodPressure"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
+"""o_train_x["BloodPressure"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
 o_test_x["BloodPressure"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
-o_train_x["BloodPressure"].min(),o_train_x["BloodPressure"].max()
+o_train_x["BloodPressure"].min(),o_train_x["BloodPressure"].max()"""
 
 
-# In[2425]:
-
-
-lower_limit,upper_limit = find_limits(train_x,"DiabetesPedigreeFunction",2)
-lower_limit,upper_limit
-
-
-# In[2426]:
-
-
-o_train_x["DiabetesPedigreeFunction"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
-o_test_x["DiabetesPedigreeFunction"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
-o_train_x["DiabetesPedigreeFunction"].min(),o_train_x["DiabetesPedigreeFunction"].max()
-
-
-# In[2427]:
-
-
-diagnostic_plots(train,"BloodPressure")
-
-
-# In[2428]:
+# In[289]:
 
 
 OK
 
 
-# In[2429]:
+# In[290]:
 
 
 ok_train_x = o_train_x.copy()
@@ -544,7 +345,7 @@ ok_train_x['Pregnancies BMI'] = t_train_x['Pregnancies BMI']
 ok_test_x['Pregnancies BMI'] = t_test_x['Pregnancies BMI']
 
 
-# In[2430]:
+# In[291]:
 
 
 lower_limit,upper_limit = find_limits(ok_train_x,"Pregnancies BMI",2)
@@ -554,13 +355,13 @@ ok_test_x["Pregnancies BMI"].clip(lower=lower_limit,upper=upper_limit,inplace=Tr
 ok_train_x["Pregnancies BMI"].min(),ok_train_x["Pregnancies BMI"].max()
 
 
-# In[2430]:
+# In[291]:
 
 
 
 
 
-# In[2431]:
+# In[292]:
 
 
 from sklearn.preprocessing import StandardScaler
@@ -576,31 +377,31 @@ st_train_x=pd.DataFrame(st_train_x, columns=train_x.columns, index=train_x.index
 st_test_x=pd.DataFrame(st_test_x, columns=test_x.columns, index=test_x.index)
 
 
-# In[2432]:
+# In[293]:
 
 
 train_x.head()
 
 
-# In[2433]:
+# In[294]:
 
 
 st_train_x.head()
 
 
-# In[2434]:
+# In[295]:
 
 
 st_test_x.head()
 
 
-# In[2434]:
+# In[295]:
 
 
 
 
 
-# In[2435]:
+# In[296]:
 
 
 test_x2=test_x.copy()
@@ -613,75 +414,16 @@ train_x2['Insulin'] = np.log1p(train_x2['Insulin'])
 train_x2['Age'] = np.log1p(train_x2['Age'])
 train_x2['DiabetesPedigreeFunction'] = np.log1p(train_x2['DiabetesPedigreeFunction'])
 train_x2['Pregnancies BMI'] = np.log1p(train_x2['Pregnancies BMI'])
+train_x2['Glucose'] = np.log1p(train_x2['Glucose'])
 test_x2['SkinThickness'] = np.log1p(test_x2['SkinThickness'])
 test_x2['Insulin'] = np.log1p(test_x2['Insulin'])
 test_x2['Age'] = np.log1p(test_x2['Age'])
 test_x2['DiabetesPedigreeFunction'] = np.log1p(test_x2['DiabetesPedigreeFunction'])
 test_x2['Pregnancies BMI'] = np.log1p(test_x2['Pregnancies BMI'])
+test_x2['Glucose'] = np.log1p(test_x2['Glucose'])
 
 
-# In[2436]:
-
-
-diagnostic_plots(train,"SkinThickness")
-
-
-# In[2437]:
-
-
-diagnostic_plots(ok_train_x,"Pregnancies BMI")
-
-
-# In[2438]:
-
-
-diagnostic_plots(train_x2,"SkinThickness")
-
-
-# In[2439]:
-
-
-diagnostic_plots(train,"Insulin")
-
-
-# In[2439]:
-
-
-
-
-
-# In[2440]:
-
-
-diagnostic_plots(train,"DiabetesPedigreeFunction")
-
-
-# In[2440]:
-
-
-
-
-
-# In[2441]:
-
-
-train_x2.hist(bins=30,figsize=(12,12))
-plt.show()
-
-
-# In[2442]:
-
-
-diagnostic_plots(train_x,"SkinThickness")
-
-
-# In[2443]:
-
-
-train_x.head()
-
-
-# In[2444]:
+# In[297]:
 
 
 from sklearn.model_selection import KFold
@@ -727,27 +469,11 @@ pred = model.predict(dtest)
 pred_label=np.where(pred>0.5,1,0)
 """logloss:0.4546
 accuracy:0.8033"""
+"""logloss:0.4682
+"""
 
 
-# In[2445]:
-
-
-test_x.head()
-
-
-# In[2446]:
-
-
-diagnostic_plots(train,"Pregnancies")
-
-
-# In[2446]:
-
-
-
-
-
-# In[2447]:
+# In[298]:
 
 
 from sklearn.linear_model import LogisticRegression
@@ -776,7 +502,7 @@ print(f"accuracy:{np.mean(scores_accuracy):.4f}")
 #accuracy:0.7770
 
 
-# In[2448]:
+# In[299]:
 
 
 from xgboost import XGBClassifier
@@ -791,38 +517,20 @@ pred=pred_xgb*0.8+pred_lr*0.2
 pred_label=np.where(pred>0.5,1,0)
 
 
-# In[2449]:
-
-
-pred
-
-
-# In[2450]:
-
-
-pred_label
-
-
-# In[2451]:
+# In[301]:
 
 
 sample[1] = pred_label
 sample.to_csv("submit.csv", header=None)
 
 
-# In[2451]:
+# In[300]:
 
 
 
 
 
-# In[2451]:
-
-
-
-
-
-# In[2451]:
+# In[300]:
 
 
 
