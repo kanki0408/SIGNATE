@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[256]:
+# In[2]:
 
 
 # Google Driveと接続を行います。これを行うことで、Driveにあるデータにアクセスできるようになります。
@@ -10,7 +10,7 @@ from google.colab import drive
 drive.mount('/content/drive')
 
 
-# In[257]:
+# In[3]:
 
 
 # 作業フォルダへの移動を行います。
@@ -19,19 +19,19 @@ import os
 os.chdir('/content/drive/MyDrive/コンペ/参加中コンペ') #ここを変更。
 
 
-# In[258]:
+# In[4]:
 
 
 pip install feature-engine
 
 
-# In[259]:
+# In[5]:
 
 
 pip install feature-engine
 
 
-# In[260]:
+# In[885]:
 
 
 import pandas as pd
@@ -41,30 +41,7 @@ sample = pd.read_csv('sample_submit.csv',index_col=0, header=None)
 train.head()
 
 
-# In[261]:
-
-
-import matplotlib.pyplot as plt
-plt.hist(train['Pregnancies'], color='skyblue', edgecolor='black')
-# グラフのタイトルとラベルの設定
-plt.title('Histogram')
-plt.xlabel('Value')
-plt.ylabel('Frequency')
-
-# グリッド線の表示
-plt.grid(True)
-
-# グラフの表示
-plt.show()
-
-
-# In[261]:
-
-
-
-
-
-# In[262]:
+# In[886]:
 
 
 import numpy as np
@@ -76,7 +53,7 @@ train.hist(bins=30,figsize=(12,12))
 plt.show()
 
 
-# In[263]:
+# In[887]:
 
 
 import seaborn as sns
@@ -91,7 +68,7 @@ plt.title("Boxplot")
 plt.show()
 
 
-# In[264]:
+# In[888]:
 
 
 def plot_boxplot_and_hist(data,variable):
@@ -112,7 +89,7 @@ def plot_boxplot_and_hist(data,variable):
   plt.show()
 
 
-# In[265]:
+# In[889]:
 
 
 def find_limits(df,variable,fold):
@@ -122,21 +99,21 @@ def find_limits(df,variable,fold):
   return lower_limit,upper_limit
 
 
-# In[266]:
+# In[890]:
 
 
 lower_limit,upper_limit = find_limits(train , "Glucose",2)
 print(lower_limit,upper_limit)
 
 
-# In[267]:
+# In[891]:
 
 
 outliers = np.where((train["Glucose"]>upper_limit) | (train["Glucose"]<lower_limit),True,False,)
 outliers.sum()
 
 
-# In[268]:
+# In[892]:
 
 
 from feature_engine.outliers import Winsorizer
@@ -144,7 +121,7 @@ from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 
 
-# In[269]:
+# In[893]:
 
 
 breast_cancer = load_breast_cancer()
@@ -152,7 +129,7 @@ X = pd.DataFrame(breast_cancer.data,columns=breast_cancer.feature_names)
 y = breast_cancer.target
 
 
-# In[270]:
+# In[894]:
 
 
 def diagnostic_plots(df,variable):
@@ -173,13 +150,13 @@ def diagnostic_plots(df,variable):
   plt.show
 
 
-# In[271]:
+# In[895]:
 
 
 diagnostic_plots(train,"Pregnancies")
 
 
-# In[272]:
+# In[896]:
 
 
 def diagnostic_plots(df,variable):
@@ -200,7 +177,7 @@ def diagnostic_plots(df,variable):
   plt.show
 
 
-# In[273]:
+# In[897]:
 
 
 train_x=train.drop(["Outcome"],axis=1)
@@ -208,28 +185,28 @@ train_y=train["Outcome"]
 test_x = test.copy()
 
 
-# In[274]:
+# In[898]:
 
 
 #相関関係の確認
 train.corrwith(train["Outcome"])
 
 
-# In[275]:
+# In[899]:
 
 
 train_x = train_x.drop(["index"],axis=1)
 test_x = test_x.drop(["index"],axis=1)
 
 
-# In[276]:
+# In[900]:
 
 
 lower_limit,upper_limit = find_limits(train_x,"Glucose",2)
 lower_limit,upper_limit
 
 
-# In[277]:
+# In[901]:
 
 
 from sklearn.preprocessing import PolynomialFeatures
@@ -239,39 +216,33 @@ t_test_x = poly.fit_transform(test_x)
 t_train_x
 
 
-# In[278]:
+# In[902]:
 
 
 poly.get_feature_names_out()
 
 
-# In[279]:
+# In[903]:
 
 
 t_train_x = pd.DataFrame(t_train_x,columns=poly.get_feature_names_out())
 t_test_x = pd.DataFrame(t_test_x,columns=poly.get_feature_names_out())
 
 
-# In[280]:
+# In[904]:
 
 
 check = t_train_x
 t_train_x["Outcome"] = train["Outcome"]
 
 
-# In[281]:
-
-
-t_train_x.head()
-
-
-# In[282]:
+# In[905]:
 
 
 t_train_x.corrwith(t_train_x["Outcome"])
 
 
-# In[283]:
+# In[906]:
 
 
 high_correlation_columns = []
@@ -292,13 +263,7 @@ OK = [ 'Pregnancies Glucose',
 OK
 
 
-# In[284]:
-
-
-t_train_x[OK].head()
-
-
-# In[285]:
+# In[907]:
 
 
 o_train_x = train_x.copy()
@@ -307,7 +272,7 @@ o2_train_x = train_x.copy()
 o2_test_x = test_x.copy()
 
 
-# In[286]:
+# In[908]:
 
 
 o_train_x["Glucose"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
@@ -315,14 +280,14 @@ o_test_x["Glucose"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
 o_train_x["Glucose"].min(),o_train_x["Glucose"].max()
 
 
-# In[287]:
+# In[909]:
 
 
 lower_limit,upper_limit = find_limits(train_x,"BloodPressure",2)
 lower_limit,upper_limit
 
 
-# In[288]:
+# In[910]:
 
 
 """o_train_x["BloodPressure"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
@@ -330,13 +295,13 @@ o_test_x["BloodPressure"].clip(lower=lower_limit,upper=upper_limit,inplace=True)
 o_train_x["BloodPressure"].min(),o_train_x["BloodPressure"].max()"""
 
 
-# In[289]:
+# In[911]:
 
 
 OK
 
 
-# In[290]:
+# In[912]:
 
 
 ok_train_x = o_train_x.copy()
@@ -345,7 +310,7 @@ ok_train_x['Pregnancies BMI'] = t_train_x['Pregnancies BMI']
 ok_test_x['Pregnancies BMI'] = t_test_x['Pregnancies BMI']
 
 
-# In[291]:
+# In[913]:
 
 
 lower_limit,upper_limit = find_limits(ok_train_x,"Pregnancies BMI",2)
@@ -355,16 +320,70 @@ ok_test_x["Pregnancies BMI"].clip(lower=lower_limit,upper=upper_limit,inplace=Tr
 ok_train_x["Pregnancies BMI"].min(),ok_train_x["Pregnancies BMI"].max()
 
 
-# In[291]:
+# In[914]:
 
 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import GridSearchCV
 
 
+# In[915]:
 
-# In[292]:
+
+"""tree_train_x = poly.fit_transform(train_x)
+tree_test_x = poly.fit_transform(test_x)"""
+"""
+"max_depth"は、XGBoostなどの決定木ベースのモデルのハイパーパラメータの1つであり、木の深さを指定します。
+木の深さが深いほどモデルの複雑性が増し、過学習の可能性が高まります。
+"""
+param_grid = {"max_depth":[2,3,4,None]}
+tree_model = GridSearchCV(
+    DecisionTreeClassifier(random_state=0),
+    cv=5,
+    scoring="accuracy",
+    param_grid=param_grid,
+)
 
 
-from sklearn.preprocessing import StandardScaler
+# In[916]:
+
+
+ok_train_x.head()
+
+
+# In[917]:
+
+
+train_y.head()
+
+
+# In[918]:
+
+
+"""variables = ["Age","Glucose"]
+variables = ["Pregnancies","SkinThickness"]"""
+variables = ["Insulin","Pregnancies"]
+tree_model.fit(ok_train_x[variables],train_y)
+
+
+# In[919]:
+
+
+ok2_train_x=ok_train_x.copy()
+ok2_test_x=ok_test_x.copy()
+
+
+# In[920]:
+
+
+ok2_train_x["new_feat"] = tree_model.predict(ok_train_x[variables])
+ok2_test_x["new_feat"] = tree_model.predict(ok_test_x[variables])
+
+
+# In[921]:
+
+
+"""from sklearn.preprocessing import StandardScaler
 # 学習データに基づいて複数列の標準化を定義
 scaler = StandardScaler()
 scaler.fit(train_x)
@@ -374,37 +393,13 @@ st_train_x = scaler.transform(train_x)
 st_test_x = scaler.transform(test_x)
 
 st_train_x=pd.DataFrame(st_train_x, columns=train_x.columns, index=train_x.index)
-st_test_x=pd.DataFrame(st_test_x, columns=test_x.columns, index=test_x.index)
+st_test_x=pd.DataFrame(st_test_x, columns=test_x.columns, index=test_x.index)"""
 
 
-# In[293]:
+# In[922]:
 
 
-train_x.head()
-
-
-# In[294]:
-
-
-st_train_x.head()
-
-
-# In[295]:
-
-
-st_test_x.head()
-
-
-# In[295]:
-
-
-
-
-
-# In[296]:
-
-
-test_x2=test_x.copy()
+"""test_x2=test_x.copy()
 train_x2=train_x.copy()
 train_x2["Pregnancies BMI"] = ok_train_x["Pregnancies BMI"]
 test_x2["Pregnancies BMI"] = ok_test_x["Pregnancies BMI"]
@@ -414,16 +409,14 @@ train_x2['Insulin'] = np.log1p(train_x2['Insulin'])
 train_x2['Age'] = np.log1p(train_x2['Age'])
 train_x2['DiabetesPedigreeFunction'] = np.log1p(train_x2['DiabetesPedigreeFunction'])
 train_x2['Pregnancies BMI'] = np.log1p(train_x2['Pregnancies BMI'])
-train_x2['Glucose'] = np.log1p(train_x2['Glucose'])
 test_x2['SkinThickness'] = np.log1p(test_x2['SkinThickness'])
 test_x2['Insulin'] = np.log1p(test_x2['Insulin'])
 test_x2['Age'] = np.log1p(test_x2['Age'])
 test_x2['DiabetesPedigreeFunction'] = np.log1p(test_x2['DiabetesPedigreeFunction'])
-test_x2['Pregnancies BMI'] = np.log1p(test_x2['Pregnancies BMI'])
-test_x2['Glucose'] = np.log1p(test_x2['Glucose'])
+test_x2['Pregnancies BMI'] = np.log1p(test_x2['Pregnancies BMI'])"""
 
 
-# In[297]:
+# In[926]:
 
 
 from sklearn.model_selection import KFold
@@ -438,14 +431,14 @@ scores_logloss =[]
 #クロスバリデーションを行う
 #学習データを4分割し、うち1つをバリデーションデータとすることを、バリデーションデータを変えて繰り返す
 kf=KFold(n_splits=4 , shuffle=True , random_state = 71)
-for tr_idx,va_idx in kf.split(ok_train_x):
+for tr_idx,va_idx in kf.split(o_train_x):
   #学習データを学習データとバリデーションデータに分ける
-  tr_x,va_x=ok_train_x.iloc[tr_idx],ok_train_x.iloc[va_idx]
+  tr_x,va_x=o_train_x.iloc[tr_idx],o_train_x.iloc[va_idx]
   tr_y,va_y=train_y.iloc[tr_idx],train_y.iloc[va_idx]
   #特徴量と目的変数をxgboostのデータ構造に変換する
   dtrain = xgb.DMatrix(tr_x,label=tr_y)
   dvalid = xgb.DMatrix(va_x, label = va_y)
-  dtest = xgb.DMatrix(ok_test_x)
+  dtest = xgb.DMatrix(o_test_x)
   #ハイパーパラメータの設定
   #silent:1によってが学習中のメッセージを抑制するようになっている
   #random_stateをせっていすることによって再現性を保つことが出来るようにしている。
@@ -467,16 +460,16 @@ print(f"accuracy:{np.mean(scores_accuracy):.4f}")
 
 pred = model.predict(dtest)
 pred_label=np.where(pred>0.5,1,0)
-"""logloss:0.4546
-accuracy:0.8033"""
-"""logloss:0.4682
+"""
+logloss:0.4685
+accuracy:0.8027
 """
 
 
-# In[298]:
+# In[924]:
 
 
-from sklearn.linear_model import LogisticRegression
+"""from sklearn.linear_model import LogisticRegression
 scores_accuracy = []
 scores_logloss =[]
 #クロスバリデーションを行う
@@ -499,39 +492,20 @@ for tr_idx,va_idx in kf.split(train_x2):
 print(f"logloss:{np.mean(scores_logloss):.4f}")
 print(f"accuracy:{np.mean(scores_accuracy):.4f}")
 #logloss:0.4807
-#accuracy:0.7770
+#accuracy:0.7770"""
 
 
-# In[299]:
+# In[925]:
 
 
 from xgboost import XGBClassifier
 
 model_xgb=XGBClassifier(n_estimators=20,random_state=71)
-model_xgb.fit(o_train_x,train_y)
-pred_xgb=model_xgb.predict_proba(o_test_x)[:,1]
-model_lr=LogisticRegression(solver="lbfgs",max_iter=300)
-model_lr.fit(train_x2,train_y)
-pred_lr=model_lr.predict_proba(test_x2)[:,1]
-pred=pred_xgb*0.8+pred_lr*0.2
+model_xgb.fit(ok_train_x,train_y)
+pred_xgb=model_xgb.predict_proba(ok_test_x)[:,1]
+
+pred=pred_xgb
 pred_label=np.where(pred>0.5,1,0)
-
-
-# In[301]:
-
-
 sample[1] = pred_label
 sample.to_csv("submit.csv", header=None)
-
-
-# In[300]:
-
-
-
-
-
-# In[300]:
-
-
-
 
